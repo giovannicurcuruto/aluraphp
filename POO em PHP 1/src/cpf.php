@@ -1,24 +1,26 @@
 <?php
 
-class cpf
+class CPF
 {
     private $numero;
 
-    public function __contruct(string $numero)
+    public function __construct(string $numero)
     {
+        $numero = filter_var($numero, FILTER_VALIDATE_REGEXP, [
+            'options' => [
+                'regexp' => '/^[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}$/'
+            ]
+        ]);
 
-        if (strlen($numero) > 14 && strlen($numero) < 11) {
-            echo "Formato invalido";
+        if ($numero === false) {
+            echo "Cpf inválido";
+            exit();
         }
-
         $this->numero = $numero;
     }
 
-    
-    public function recuperaNumero()
+    public function recuperaNumero(): string
     {
         return $this->numero;
     }
-
-
 }
